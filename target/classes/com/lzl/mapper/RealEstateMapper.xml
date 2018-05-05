@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzl.mapper.RealEstateMapper">
+	<resultMap type="com.lzl.model.RealEstate" id="baseMap">
+		<id property="id" column="id"/>
+		<result property="projectName" column="projectname"/>
+		<result property="address" column="address"/>
+		<result property="houseType" column="housetype"/>
+		<result property="buildTime" column="buildtime"/>
+		<result property="area" column="area"/>
+		<result property="users.cardId" column="cardid"/>
+		<result property="users.name" column="name"/>
+	</resultMap>
+
+	<select id="listAll" resultMap="baseMap">
+		SELECT t1.id , t1.projectname
+		,t1.address, t1.hoursetype,t1.area,t1.buildtime,t2.cardid,t2.name
+		FROM real_estate t1 LEFT JOIN users t2 ON t1.cardid = t2.cardid
+	</select>
+	
+	<select id="listWithName" resultMap="baseMap">
+		SELECT t1.id , t1.projectname
+		,t1.address, t1.hoursetype,t1.area,t1.buildtime,t2.cardid,t2.name
+		FROM real_estate t1 LEFT JOIN users t2 ON t1.cardid = t2.cardid
+		<where>
+			<if test="name != null and name != ''">
+			and t2.name = #{name}
+			</if>
+		</where>
+	</select>
+	
+	<select id="listWithCardId" resultMap="baseMap">
+		SELECT t1.id , t1.projectname
+		,t1.address, t1.hoursetype,t1.area,t1.buildtime,t2.cardid,t2.name
+		FROM real_estate t1 LEFT JOIN users t2 ON t1.cardid = t2.cardid
+		<where>
+			<if test="cardId != null and cardId != ''">
+			and t2.cardid = #{cardId}
+			</if>
+		</where>
+	</select>
+</mapper>
